@@ -1,0 +1,36 @@
+<div class="profile-selection-container main-container">
+  <h1>Welcome to SpacesTek</h1>
+  <p>Join immersive audio discussions. Select a profile below or create a new one to get started.</p>
+
+  <h3>Pick a Profile</h3>
+  <div class="user-grid">
+    <div
+      *ngFor="let user of availableUsers$ | async"
+      class="user-card"
+      [class.recent]="user.id === recentUserId"
+      (click)="handleSelect(user.id)"
+    >
+      <img [src]="user.avatarUrl" [alt]="user.displayName" class="user-avatar" />
+      <span class="user-name">{{ user.displayName }}</span>
+      <span *ngIf="user.id === recentUserId" class="recently-used">
+        Recently Used
+      </span>
+    </div>
+  </div>
+
+  <div class="create-profile-form form-container">
+    <h3>
+      <fa-icon [icon]="faUserPlus"></fa-icon> Create a New Profile</h3>
+    <input
+      type="text"
+      placeholder="Display name"
+      [(ngModel)]="displayName"
+    />
+    <input
+      type="text"
+      placeholder="Avatar URL (optional)"
+      [(ngModel)]="avatarUrl"
+    />
+    <button (click)="handleCreate()">Create</button>
+  </div>
+</div>

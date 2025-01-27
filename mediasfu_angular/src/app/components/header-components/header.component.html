@@ -1,0 +1,15 @@
+<header class="main-container">
+  <!-- Title Section -->
+  <div class="header-title" (click)="router.navigate(['/'])">SpacesTek</div>
+
+  <div *ngIf="(currentUser | async) as user" class="header-user">
+    <div class="user-info">
+      <img [src]="user.avatarUrl" [alt]="user.displayName" class="user-avatar" />
+      <span class="user-name">{{ user.displayName }}</span>
+    </div>
+    <button class="logout-button" (click)="handleLogout()">
+      <fa-icon [icon]="faSignOutAlt"></fa-icon>
+      Logout
+    </button>
+  </div>
+</header>

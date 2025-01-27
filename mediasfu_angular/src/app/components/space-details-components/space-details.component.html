@@ -1,0 +1,269 @@
+<div class="space-details-container container">
+  <!-- Header with Back and End Space Buttons -->
+  <div class="space-header">
+    <button class="back-button" (click)="router.navigate(['/'])">
+      <fa-icon [icon]="faArrowLeft" class="icon"></fa-icon>
+      Back
+    </button>
+
+    <!-- Audio Controls Section -->
+    <!-- If the user is in the space, the space is active, and there's no endedAt date yet -->
+    <div
+      *ngIf="
+        (currentUser | async) &&
+        (space | async)?.active &&
+        !(space | async)?.endedAt
+      "
+      class="audio-controls"
+    >
+      <div class="status-indicator">
+        <div
+          class="connection-status"
+          [ngClass]="{
+            connected: (isConnected | async),
+            disconnected: !(isConnected | async)
+          }"
+          [title]="(isConnected | async) ? 'Connected' : 'Disconnected'"
+        ></div>
+      </div>
+
+      <!-- If connected to the audio system -->
+      <ng-container *ngIf="isConnected | async; else connectButton">
+        <!-- If current user can speak -->
+        <ng-container *ngIf="canSpeak | async; else requestSpeakButton">
+          <div class="mic-controls">
+            <button
+              class="toggle-mic-btn"
+              (click)="handleToggleMic()"
+              [attr.aria-label]="(isMuted | async) ? 'Turn on' : 'Turn off'"
+            >
+              <fa-icon
+                [icon]="(isMuted | async) ? faMicrophoneSlash : faMicrophone"
+              ></fa-icon>
+              {{ (isMuted | async) ? "Turn on" : "Turn off" }} Mic
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- If the user can't speak, show the "Request to Speak" button -->
+        <ng-template #requestSpeakButton>
+          <button class="request-speak-btn" (click)="checkRequestToSpeak()">
+            <fa-icon [icon]="faMicrophoneSlash"></fa-icon> Request to Speak
+          </button>
+        </ng-template>
+      </ng-container>
+
+      <!-- If not connected, show the "Connect Audio" button -->
+      <ng-template #connectButton>
+        <button class="connect-btn">
+          <fa-icon [icon]="faArrowRight"></fa-icon> Connect Audio
+        </button>
+      </ng-template>
+
+      <!-- Host actions -->
+      <ng-container *ngIf="isHost() && (space | async)?.active">
+        <button class="end-space-button" (click)="handleEndSpace()">
+          <fa-icon [icon]="faPowerOff" class="icon"></fa-icon>
+          End Space
+        </button>
+      </ng-container>
+
+      <!-- Non-host or inactive space: "Leave" button -->
+      <ng-container *ngIf="!isHost() || !(space | async)?.active">
+        <button class="leave-button" (click)="handleLeave()">
+          <fa-icon [icon]="faSignOutAlt"></fa-icon> Leave
+        </button>
+      </ng-container>
+    </div>
+
+    <!-- Join and Speak Controls -->
+    <!-- If user is not in the space, space is active, and canJoinNow is true, and space is not ended -->
+    <ng-container
+      *ngIf="
+        !(currentUser | async) &&
+        (space | async)?.active &&
+        canJoinNow &&
+        !ended
+      "
+    >
+      <button class="join-button" (click)="handleJoin()">
+        <fa-icon [icon]="faCheckCircle"></fa-icon> Join
+      </button>
+    </ng-container>
+  </div>
+
+  <!-- Message -->
+  <div *ngIf="message | async" class="error-message">
+    {{ message | async }}
+  </div>
+
+  <!-- Space Information -->
+  <div class="space-info">
+    <h2 class="space-title">{{ (space | async)?.title }}</h2>
+    <p class="space-description">{{ (space | async)?.description }}</p>
+
+    <!-- Status Icons -->
+    <div class="space-status-icons">
+      <div *ngIf="ended" class="status-icon ended">
+        <fa-icon [icon]="faFlagCheckered"></fa-icon> Ended
+      </div>
+      <div
+        *ngIf="scheduled && !(space | async)?.endedAt"
+        class="status-icon scheduled"
+      >
+        <fa-icon [icon]="faClock"></fa-icon> Scheduled
+      </div>
+      <div
+        *ngIf="
+          !scheduled && (space | async)?.active && !(space | async)?.endedAt
+        "
+        class="status-icon live"
+      >
+        <fa-icon [icon]="faCheckCircle"></fa-icon> Live Now
+      </div>
+    </div>
+
+    <!-- Speakers & Listeners Count -->
+    <div class="space-counts">
+      <span>
+        <fa-icon [icon]="faUsers"></fa-icon>
+        {{ getCounts((space | async)!).speakers }} Speakers
+      </span>
+      <span>
+        <fa-icon [icon]="faEye"></fa-icon>
+        {{ getCounts((space | async)!).listeners }} Listeners
+      </span>
+    </div>
+
+    <!-- Progress Bar if space is active and not ended -->
+    <div
+      *ngIf="(space | async)?.active && !(space | async)?.endedAt"
+      class="progress-bar"
+    >
+      <div class="progress" [style.width.%]="progress"></div>
+    </div>
+
+    <!-- Request Buttons -->
+    <div
+      *ngIf="
+        isHost() &&
+        ((space | async)?.askToJoin || (space | async)?.askToSpeak) &&
+        !(space | async)?.endedAt
+      "
+      class="request-buttons"
+    >
+      <button class="manage-request-btn" (click)="showJoinRequests.next(true)">
+        <fa-icon [icon]="faUserSlash"></fa-icon> Join Requests
+        <span
+          class="pill"
+          *ngIf="((space | async)?.askToJoinQueue)!.length > 0"
+        >
+          {{ ((space | async)?.askToJoinQueue)!.length }}
+        </span>
+      </button>
+      <button class="manage-request-btn" (click)="showSpeakRequests.next(true)">
+        <fa-icon [icon]="faMicrophone"></fa-icon> Speak Requests
+        <span
+          class="pill"
+          *ngIf="((space | async)?.askToSpeakQueue)!.length > 0"
+        >
+          {{ ((space | async)?.askToSpeakQueue)!.length }}
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Join Requests Modal -->
+  <app-modal
+    [isOpen]="(showJoinRequests | async) ?? false"
+    (onClose)="showJoinRequests.next(false)"
+    title="Join Requests"
+  >
+    <ng-container *ngIf="((space | async)?.askToJoinQueue)!.length === 0">
+      <p>No join requests.</p>
+    </ng-container>
+    <ng-container *ngIf="((space | async)?.askToJoinQueue)!.length > 0">
+      <div
+        *ngFor="let id of (space | async)?.askToJoinQueue"
+        class="request-card"
+      >
+        <span>{{ getParticipantDisplayName(id) }}</span>
+        <div>
+          <button
+            class="accept-btn"
+            (click)="handleApproveJoin(id)"
+            title="Approve Join"
+          >
+            <fa-icon [icon]="faCheck"></fa-icon>
+          </button>
+          <button
+            class="reject-btn"
+            (click)="handleRejectJoin(id)"
+            title="Reject Join"
+          >
+            <fa-icon [icon]="faTimes"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </app-modal>
+
+  <!-- Speak Requests Modal -->
+  <app-modal
+    [isOpen]="(showSpeakRequests | async) ?? false"
+    (onClose)="showSpeakRequests.next(false)"
+    title="Speak Requests"
+  >
+    <ng-container *ngIf="((space | async)?.askToSpeakQueue)!.length === 0">
+      <p>No speak requests.</p>
+    </ng-container>
+    <ng-container *ngIf="((space | async)?.askToSpeakQueue)!.length > 0">
+      <div
+        *ngFor="let id of (space | async)?.askToSpeakQueue"
+        class="request-card"
+      >
+        <span>{{ getParticipantDisplayName(id) }}</span>
+        <div>
+          <button
+            class="accept-btn"
+            (click)="handleApproveSpeak(id)"
+            title="Approve Speak"
+          >
+            <fa-icon [icon]="faCheck"></fa-icon>
+          </button>
+          <button
+            class="reject-btn"
+            (click)="handleRejectSpeak(id)"
+            title="Reject Speak"
+          >
+            <fa-icon [icon]="faTimes"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </app-modal>
+
+  <!-- Participant Grid -->
+  <div class="participants-section">
+    <h3>Participants</h3>
+    <div class="participants-grid">
+      <app-participant-card
+        *ngFor="
+          let p of (space | async)?.participants;
+          trackBy: trackByParticipantId
+        "
+        [participant]="p"
+        [isHost]="isHost()"
+        [currentUserId]="(currentUser | async)?.id"
+        (onMute)="handleMuteParticipant($event)"
+        (onToggleMic)="handleToggleMic()"
+        (onRemoveParticipant)="handleRemoveParticipant($event)"
+        [space]="(space | async)!"
+      >
+      </app-participant-card>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <app-spinner *ngIf="isLoading | async"></app-spinner>
+</div>

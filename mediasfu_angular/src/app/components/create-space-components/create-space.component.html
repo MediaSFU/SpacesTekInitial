@@ -1,0 +1,90 @@
+<div class="create-space-container container">
+  <div class="create-space-header">
+    <button class="back-button" (click)="navigateBack()">
+      <fa-icon [icon]="faArrowLeft"></fa-icon> Cancel
+    </button>
+    <h2>Create a New Space</h2>
+  </div>
+
+  <div class="form-container">
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <!-- Title Field -->
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        id="title"
+        type="text"
+        [(ngModel)]="title"
+        placeholder="e.g., Evening Discussion"
+        required
+      />
+    </div>
+
+    <!-- Description Field -->
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        [(ngModel)]="description"
+        placeholder="Describe your space..."
+        required
+      ></textarea>
+    </div>
+
+    <!-- Capacity Field -->
+    <div class="form-group">
+      <label for="capacity">Capacity</label>
+      <input
+        id="capacity"
+        type="number"
+        [(ngModel)]="capacity"
+        min="2"
+        max="10000"
+        required
+      />
+    </div>
+
+    <!-- Ask to Speak Checkbox -->
+    <div class="form-group checkbox-group">
+      <label for="ask-to-speak">Ask to Speak</label>
+      <input id="ask-to-speak" type="checkbox" [(ngModel)]="askToSpeak" />
+    </div>
+
+    <!-- Ask to Join Checkbox -->
+    <div class="form-group checkbox-group">
+      <label for="ask-to-join">Ask to Join</label>
+      <input id="ask-to-join" type="checkbox" [(ngModel)]="askToJoin" />
+    </div>
+
+    <!-- Start Time Field -->
+    <div class="form-group">
+      <label for="start-time">Start Time (optional)</label>
+      <input id="start-time" type="datetime-local" [(ngModel)]="startTime" />
+      <small>
+        Leave blank for immediate start. Must be within the next 3 days.
+      </small>
+    </div>
+
+    <!-- Duration Field -->
+    <div class="form-group">
+      <label for="duration">Duration</label>
+      <select id="duration" [(ngModel)]="duration" required>
+        <option *ngFor="let d of durations" [value]="d.value">
+          {{ d.label }}
+        </option>
+      </select>
+      <small>
+        Choose how long the space will run before automatically ending.
+      </small>
+    </div>
+
+    <!-- Create Space Button -->
+    <button class="create-space-button" (click)="handleCreate()">
+      Create Space
+    </button>
+  </div>
+</div>

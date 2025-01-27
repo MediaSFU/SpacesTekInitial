@@ -1,0 +1,60 @@
+<div class="participant-card" (dblclick)="handleDoubleClick()">
+  <!-- Host Icon -->
+  <fa-icon
+    *ngIf="participant.role === 'host'"
+    [icon]="faCrown"
+    class="fa-crown"
+  ></fa-icon>
+
+  <!-- Avatar -->
+  <img
+    [src]="participant.avatarUrl || 'https://www.mediasfu.com/logo192.png'"
+    alt="{{ displayName }}"
+    class="participant-avatar"
+  />
+
+  <!-- Participant Details -->
+  <div class="participant-name">{{ displayName }}</div>
+  <div class="participant-role">{{ roleLabel }}</div>
+
+  <!-- Audio Controls -->
+  <div class="participant-controls">
+    <div class="participant-audio-status" (click)="participant.id === currentUserId && handleToggleMic()" *ngIf="participant.role !== 'listener' && !isHost">
+      <fa-icon
+        [icon]="participant.muted ? faMicrophoneSlash : faMicrophone"
+      ></fa-icon>
+    </div>
+
+    <!-- Mute Button -->
+    <button
+      *ngIf="isHost && participant.id !== currentUserId && participant.role !== 'listener' && !participant.muted"
+      class="mute-other-btn"
+      (click)="handleMute()"
+    >
+      <fa-icon [icon]="faMicrophoneSlash"></fa-icon>
+    </button>
+  </div>
+
+  <!-- Request Actions -->
+  <div *ngIf="showActions" class="participant-request-actions">
+    <button
+      class="accept-btn"
+      (click)="approveRequest()"
+      title="Approve as Speaker"
+    >
+      <fa-icon [icon]="faCheck"></fa-icon>
+    </button>
+    <button class="reject-btn" (click)="rejectRequest()" title="Reject Request">
+      <fa-icon [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+
+  <!-- Remove Button -->
+  <button
+    *ngIf="showRemoveParticipant"
+    class="remove-btn"
+    (click)="handleRemoveParticipant()"
+  >
+    <fa-icon [icon]="faTrash"></fa-icon>
+  </button>
+</div>

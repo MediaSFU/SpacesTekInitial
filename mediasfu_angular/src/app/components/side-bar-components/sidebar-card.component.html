@@ -1,0 +1,12 @@
+<div class="sidebar-card" (click)="onClick()" tabindex="0">
+  <h4 class="sidebar-card-title">{{ space.title }}</h4>
+  <p class="sidebar-card-participants">
+    <fa-icon [icon]="faUsers"></fa-icon> {{ participantCount(space) }} participants
+  </p>
+  <p class="sidebar-card-status">
+    <fa-icon *ngIf="isSpaceEnded(space)" [icon]="faFlagCheckered" style="color: #d93025;"></fa-icon>
+    <fa-icon *ngIf="isSpaceScheduled(space)" [icon]="faClock" style="color: #b58f00;"></fa-icon>
+    <fa-icon *ngIf="!isSpaceScheduled(space) && space.active && !isSpaceEnded(space)" [icon]="faCheckCircle" style="color: #1da1f2;"></fa-icon>
+    {{ getSpaceStatus(space) }}
+  </p>
+</div>

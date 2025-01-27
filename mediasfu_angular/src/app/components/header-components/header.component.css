@@ -1,0 +1,84 @@
+/* General Styling */
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #f7f9f9;
+  margin: 0;
+  padding: 0;
+  color: #0f1419;
+}
+
+h1, h2, h3, h4 {
+  margin: 0.5em 0;
+  font-weight: 600;
+}
+
+/* Header Styling */
+.main-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Title Styling */
+.header-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  cursor: pointer;
+  color: #333;
+}
+
+.header-title:hover {
+  color: #1da1f2;
+  transition: color 0.3s ease;
+}
+
+/* User Section Styling */
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.9em;
+  color: #333;
+}
+
+/* Logout Button Styling */
+.logout-button {
+  background: transparent;
+  color: #121212;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1.0em;
+  transition: color 0.3s ease;
+}
+
+.logout-button:hover {
+  color: #2b2d2e;
+}

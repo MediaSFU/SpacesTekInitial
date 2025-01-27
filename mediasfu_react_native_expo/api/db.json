@@ -1,0 +1,23 @@
+{
+  "spaces":[],
+  "users": [
+    {
+      "id": "userA",
+      "displayName": "Alice",
+      "avatarUrl": "https://i.pravatar.cc/150?img=5",
+      "taken": false
+    },
+    {
+      "id": "userB",
+      "displayName": "Bob",
+      "avatarUrl": "https://i.pravatar.cc/150?img=10",
+      "taken": false
+    },
+    {
+      "id": "userC",
+      "displayName": "Charlie",
+      "avatarUrl": "https://i.pravatar.cc/150?img=59",
+      "taken": false
+    }
+  ]
+}

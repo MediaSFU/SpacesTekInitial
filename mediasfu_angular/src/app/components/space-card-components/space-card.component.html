@@ -1,0 +1,94 @@
+<div class="space-card">
+
+  <!-- Header -->
+  <div class="space-card-header">
+    <h3 class="space-card-title">{{ space.title }}</h3>
+    <span
+      class="space-card-status"
+      [ngClass]="{
+        'ended': ended,
+        'scheduled': scheduled,
+        'live': !ended && !scheduled
+      }"
+    >
+      <!-- Similar to your React icons logic -->
+      <ng-container *ngIf="ended">
+        <fa-icon [icon]="faFlagCheckered" style="color: #d93025;"></fa-icon>
+        Ended
+      </ng-container>
+      <ng-container *ngIf="scheduled && !ended">
+        <fa-icon [icon]="faClock" style="color: #b58f00;"></fa-icon>
+        Scheduled
+      </ng-container>
+      <ng-container *ngIf="!scheduled && !ended">
+        <fa-icon [icon]="faCheckCircle" style="color: #1da1f2;"></fa-icon>
+        Live
+      </ng-container>
+    </span>
+  </div>
+
+  <!-- Description -->
+  <p class="space-card-description">{{ space.description }}</p>
+
+  <!-- Meta -->
+  <div class="space-card-meta">
+    <span class="space-card-participants">
+      <fa-icon [icon]="faUsers"></fa-icon>
+      {{ space.participants.length }} participants
+    </span>
+  </div>
+
+  <!-- Actions -->
+  <div class="space-actions">
+    <!-- If not ended and user can join now -->
+    <ng-container *ngIf="canJoinNow && !ended">
+      <!-- Approved => just join -->
+      <button *ngIf="joinStatus === 'Approved'" (click)="onJoinSpace()">
+        Join
+      </button>
+
+      <!-- Lobby => also just join -->
+      <button *ngIf="joinStatus === 'Lobby'" (click)="onJoinSpace()">
+        Join
+      </button>
+
+      <!-- Request to join -->
+      <button
+        *ngIf="joinStatus === 'Request to join'"
+        (click)="onRequestJoinSpace()"
+      >
+        Request to join
+      </button>
+
+      <!-- Pending approval, Rejected, or Banned => show status -->
+      <span
+        *ngIf="
+          joinStatus !== 'Approved' &&
+          joinStatus !== 'Lobby' &&
+          joinStatus !== 'Request to join'
+        "
+        class="join-status"
+      >
+        {{ joinStatus }}
+      </span>
+    </ng-container>
+
+    <!-- If ended -->
+    <span *ngIf="ended" class="ended-label">
+      This space has ended
+    </span>
+
+    <!-- If scheduled but not ended -->
+    <span *ngIf="scheduled && !ended" class="scheduled-label">
+      Starts soon. Check back closer to start time.
+    </span>
+
+    <!-- If not ended, not scheduled, but can't join yet => Just a "View Details" button -->
+    <button
+      *ngIf="!canJoinNow && !ended && !scheduled"
+      (click)="onViewDetails()"
+    >
+      View Details
+    </button>
+  </div>
+</div>

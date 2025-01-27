@@ -1,0 +1,149 @@
+
+.participant-card {
+  background: #fff;
+  width: 120px;
+  height: 120px;
+  border-radius: 0%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.0);
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.participant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.0);
+}
+
+.participant-avatar {
+  width: 65%;
+  height: 65%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.participant-name, .participant-role {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 0.7em;
+  text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+.participant-name {
+  bottom: 8%;
+  font-weight: 400;
+  color: #333;
+}
+
+.participant-role {
+  bottom: -1%;
+  color: #555;
+}
+
+/* Mic at top right */
+.participant-audio-status {
+  position: absolute;
+  top: 8%;
+  left: 15%;
+  font-size: 0.7em;
+  background: rgba(0,0,0,0.3);
+  padding: 0.1em;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mute-other-btn {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  background: rgba(255,255,255,0.7);
+  color: #333;
+  font-size: 0.7em;
+  border-radius: 8px;
+  padding: 0.2em 0.4em;
+}
+
+/* Crown at top center */
+.participant-card .fa-crown {
+  position: absolute;
+  top: 8%;
+  right: 10%;
+  transform: translateX(-50%);
+  font-size: 0.8em;
+  color: #f1c40f;
+  text-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+.participant-card .participant-request-actions {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.5em;
+  font-size: 0.8em;
+}
+
+.participant-card .participant-request-actions .accept {
+  background: #2ecc71;
+  color: #fff;
+  padding: 0.1em 0.1em;
+  border-radius: 50%;
+}
+
+.participant-card .participant-request-actions .reject {
+  background: #e74c3c;
+  color: #fff;
+  padding: 0.1em 0.1em;
+  border-radius: 50%;
+}
+
+.participant-request-actions button:hover {
+  background: #0056b3;
+}
+
+.accept-btn {
+  background: #1da1f2; /* Twitter blue */
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(29, 161, 242, 0.2); /* Subtle shadow */
+}
+
+.accept-btn:hover {
+  background: #187bc1; /* Darker blue on hover */
+  transform: translateY(-2px); /* Lift on hover */
+  box-shadow: 0 4px 6px rgba(29, 161, 242, 0.3); /* Enhanced shadow */
+}
+
+.reject-btn {
+  background: #e74c3c; /* Red for rejection */
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.2); /* Subtle shadow */
+}
+
+.reject-btn:hover {
+  background: #c0392b; /* Darker red on hover */
+  transform: translateY(-2px); /* Lift on hover */
+  box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3); /* Enhanced shadow */
+}
+
+.remove-btn {
+  background: #e74c3c; /* Red for rejection */
+  color: #fff;
+  position: absolute;
+  top:10%;
+  right: 0%;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8em;
+  color: #f1c40f;
+  text-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+
+
+

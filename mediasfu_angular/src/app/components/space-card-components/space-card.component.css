@@ -1,0 +1,140 @@
+/* Space Card */
+.space-card {
+  background: #fff;
+  border-radius: 12px; /* Match the sidebar cards */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Softer shadow for consistency */
+  padding: 1.5em;
+  margin-bottom: 1em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Faster animation for responsiveness */
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.space-card:hover {
+  transform: translateY(-3px); /* Slightly higher lift */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.space-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee; /* Lighter border for subtle separation */
+  padding-bottom: 0.5em;
+}
+
+.space-card-title {
+  font-size: 1.1em; /* Slightly smaller for consistency */
+  font-weight: bold;
+  margin: 0;
+  color: #333;
+}
+
+.space-card-status {
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 0.3em 0.6em;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 80px; /* Ensure consistent button size */
+}
+
+.space-card-status.live {
+  background: #e0f7fa;
+  color: #00796b;
+}
+
+.space-card-status.scheduled {
+  background: #fff8e1;
+  color: #fbc02d;
+}
+
+.space-card-status.ended {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Description */
+.space-card-description {
+  font-size: 0.95em;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Meta Information */
+.space-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ensures better spacing for meta items */
+  gap: 1em;
+  font-size: 0.9em;
+  color: #555;
+  padding-top: 0.5em;
+  border-top: 1px solid #eee; /* Consistent with header border */
+}
+
+.space-card-meta .space-card-participants {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* Actions */
+.space-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5em; /* Adds space between buttons */
+  margin-top: 1em;
+}
+
+.space-actions button {
+  background: #1da1f2;
+  color: #fff;
+  border: none;
+  border-radius: 12px; /* Match the rest of the design */
+  padding: 0.5em 1.2em;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background 0.3s ease;
+}
+
+.space-actions button:hover {
+  background: #1a91da;
+}
+
+.ended-label,
+.scheduled-label {
+  font-size: 0.9em;
+  color: #888;
+  font-style: italic; /* Distinguish these labels */
+}
+
+/* Join Status Label */
+.join-status {
+  font-size: 0.9em;
+  color: #555;
+  background: #f0f8ff;
+  border-radius: 8px;
+  padding: 0.3em 0.6em;
+  text-align: center;
+}
+
+/* Consistent Responsiveness */
+@media (max-width: 768px) {
+  .space-card {
+    padding: 1em;
+  }
+
+  .space-card-meta {
+    flex-direction: column; /* Stack meta items on smaller screens */
+    align-items: flex-start;
+    gap: 0.5em;
+  }
+
+  .space-actions {
+    justify-content: center; /* Center actions on smaller screens */
+  }
+}

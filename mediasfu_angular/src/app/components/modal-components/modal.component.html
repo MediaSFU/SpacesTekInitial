@@ -1,0 +1,16 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="closeModal($event)">
+  <div class="modal-content" (click)="stopPropagation($event)">
+    <div class="modal-header">
+      <h3>{{ title }}</h3>
+      <button class="modal-close-btn" (click)="closeModal($event)">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeModal($event)">Close</button>
+    </div>
+  </div>
+</div>

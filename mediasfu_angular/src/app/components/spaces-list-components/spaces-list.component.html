@@ -1,0 +1,141 @@
+<div class="spaces-list-layout">
+
+  <!-- Left Sidebar - Top Spaces -->
+  <div class="left-sidebar">
+    <h3>Top Spaces</h3>
+    <div class="sidebar-card-container">
+      <app-sidebar-card
+        *ngFor="let space of topSpaces.value"
+        [space]="space"
+        (navigateToSpace)="navigateToSpace(space.id)">
+      </app-sidebar-card>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="spaces-list-container container">
+    <!-- Message -->
+    <div *ngIf="message.value" class="error-message">
+      {{ message.value }}
+    </div>
+    <h1>Browse Spaces</h1>
+
+    <!-- Search and Filter Bar -->
+    <div class="search-filter-bar">
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Search for spaces..."
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchQueryChange($event)"
+        />
+        <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+      </div>
+
+      <!-- Filter Dropdown -->
+      <div class="filter-dropdown">
+        <fa-icon [icon]="faFilter" class="filter-icon"></fa-icon>
+        <select
+          [(ngModel)]="filterStatus"
+          (change)="onFilterStatusChange($event)"
+        >
+          <option value="All">All</option>
+          <option value="Live">Live</option>
+          <option value="Scheduled">Scheduled</option>
+          <option value="Ended">Ended</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Create Space Button -->
+    <button
+      class="create-space-button"
+      (click)="router.navigate(['/create-space'])"
+    >
+      Create New Space
+    </button>
+
+    <!-- Spaces List -->
+    <ul class="spaces-list">
+      <app-space-card
+      *ngFor="let space of getCurrentSpaces()"
+      [space]="space"
+      [userId]="user.value?.id!"
+      (joinSpaceEvent)="handleJoinSpace($event)"
+      (requestJoinSpaceEvent)="handleRequestJoinSpace($event)"
+      (viewDetailsEvent)="navigateToSpace($event.id)"
+    ></app-space-card>
+    </ul>
+
+    <!-- Pagination Controls -->
+    <div *ngIf="getTotalPages() > 1" class="pagination-controls">
+      <!-- Items Per Page -->
+      <div class="items-per-page">
+        <fa-icon [icon]="faList" class="pagination-icon"></fa-icon>
+        <label for="itemsPerPage">Show:</label>
+        <select
+          id="itemsPerPage"
+          [(ngModel)]="itemsPerPage"
+          (change)="handleItemsPerPageChange($event)"
+        >
+          <option [value]="5">5</option>
+          <option [value]="10">10</option>
+          <option [value]="25">25</option>
+          <option [value]="50">50</option>
+        </select>
+      </div>
+
+      <!-- Page Navigation -->
+      <div class="page-navigation">
+        <button
+          (click)="handleFirstPage()"
+          [disabled]="currentPage === 1"
+          title="First Page"
+          aria-label="First Page"
+        >
+          <fa-icon [icon]="faAngleDoubleLeft"></fa-icon>
+        </button>
+        <button
+          (click)="handlePrevPage()"
+          [disabled]="currentPage === 1"
+          title="Previous Page"
+          aria-label="Previous Page"
+        >
+          <fa-icon [icon]="faChevronLeft"></fa-icon>
+        </button>
+        <span class="current-page">
+          Page {{ currentPage }} of {{ getTotalPages() }}
+        </span>
+        <button
+          (click)="handleNextPage()"
+          [disabled]="currentPage === getTotalPages()"
+          title="Next Page"
+          aria-label="Next Page"
+        >
+          <fa-icon [icon]="faChevronRight"></fa-icon>
+        </button>
+        <button
+          (click)="handleLastPage()"
+          [disabled]="currentPage === getTotalPages()"
+          title="Last Page"
+          aria-label="Last Page"
+        >
+          <fa-icon [icon]="faAngleDoubleRight"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Sidebar - Recent Spaces -->
+  <div class="right-sidebar">
+    <h3>Recent Spaces</h3>
+    <div class="sidebar-card-container">
+      <app-sidebar-card
+        *ngFor="let space of recentSpaces.value"
+        [space]="space"
+        (navigateToSpace)="navigateToSpace(space.id)">
+      </app-sidebar-card>
+    </div>
+  </div>
+</div>
